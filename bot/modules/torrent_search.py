@@ -280,11 +280,6 @@ RESULT_STR_PIRATEBAY = (
     "➲Size: {Size}\n"
     "➲Seeders: {Seeders} || ➲Leechers: {Leechers}"
 )
-RESULT_STR_TGX = (
-    "➲Name: `{Name}`\n" 
-    "➲Size: {Size}\n"
-    "➲Seeders: {Seeders} || ➲Leechers: {Leechers}"
-)
 RESULT_STR_YTS = (
     "➲Name: `{Name}`\n"
     "➲Released on: {ReleasedDate}\n"
@@ -293,11 +288,6 @@ RESULT_STR_YTS = (
     "➲Likes: {Likes}\n"
     "➲Duration: {Runtime}\n"
     "➲Language: {Language}"
-)
-RESULT_STR_EZTV = (
-    "➲Name: `{Name}`\n"
-    "➲Size: {Size}\n"
-    "➲Seeders: {Seeders}"
 )
 RESULT_STR_TORLOCK = (
     "➲Name: `{Name}`\n"
@@ -320,9 +310,7 @@ TORRENT_API = 'https://api.linkstore.eu.org/api'
 torrents_dict = {
     '1337x': {'source': f"{TORRENT_API}/1337x/", 'result_str': RESULT_STR_1337},
     'piratebay': {'source': f"{TORRENT_API}/piratebay/", 'result_str': RESULT_STR_PIRATEBAY},
-    'tgx': {'source': f"{TORRENT_API}/tgx/", 'result_str': RESULT_STR_TGX},
     'yts': {'source': f"{TORRENT_API}/yts/", 'result_str': RESULT_STR_YTS},
-    'eztv': {'source': f"{TORRENT_API}/eztv/", 'result_str': RESULT_STR_EZTV},
     'torlock': {'source': f"{TORRENT_API}/torlock/", 'result_str': RESULT_STR_TORLOCK},
     'rarbg': {'source': f"{TORRENT_API}/rarbg/", 'result_str': RESULT_STR_RARBG},
     'ts': {'source': f"{TORRENT_API}/all/", 'result_str': RESULT_STR_ALL}
@@ -340,9 +328,7 @@ def searchhelp(update, context):
 • /sukebei <i>[search query]</i>
 • /1337x <i>[search query]</i>
 • /piratebay <i>[search query]</i>
-• /tgx <i>[search query]</i>
 • /yts <i>[search query]</i>
-• /eztv <i>[search query]</i>
 • /torlock <i>[search query]</i>
 • /rarbg <i>[search query]</i>
 • /ts <i>[search query]</i>
