@@ -29,11 +29,11 @@ class MirrorStatus:
     STATUS_PAUSE = "Paused...⭕️"
     STATUS_ARCHIVING = "Archiving...🔐"
     STATUS_EXTRACTING = "Extracting...📂"
-    STATUS_SPLITTING = "Splitting...✂️"
+    
 
 
 PROGRESS_MAX_SIZE = 100 // 8
-PROGRESS_INCOMPLETE = ['▏', '▎', '▍', '▌', '▋', '▊', '▉']
+PROGRESS_INCOMPLETE = ['⎊', '⎊', '⎊', '⎊', '⎊', '⎊', '⎊']
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
 
@@ -76,7 +76,6 @@ def getDownloadByGid(gid):
                 not in [
                     MirrorStatus.STATUS_ARCHIVING,
                     MirrorStatus.STATUS_EXTRACTING,
-                    MirrorStatus.STATUS_SPLITTING,
                 ]
                 and dl.gid() == gid
             ):
@@ -92,7 +91,6 @@ def getAllDownload():
                 not in [
                     MirrorStatus.STATUS_ARCHIVING,
                     MirrorStatus.STATUS_EXTRACTING,
-                    MirrorStatus.STATUS_SPLITTING,
                     MirrorStatus.STATUS_CLONING,
                     MirrorStatus.STATUS_UPLOADING,
                 ]
@@ -133,7 +131,6 @@ def get_readable_message():
             if download.status() not in [
                 MirrorStatus.STATUS_ARCHIVING,
                 MirrorStatus.STATUS_EXTRACTING,
-                MirrorStatus.STATUS_SPLITTING,
             ]:
                 msg += f"\n<code>{get_progress_bar_string(download)}</code> {download.progress()}"
                 if download.status() == MirrorStatus.STATUS_CLONING:
