@@ -16,7 +16,7 @@
 
 ## By Slam Devs
 - qBittorrent
-- Leach supported
+- Leech supported
 - Thumbnail supported
 - Size limiting for Torrent/Direct, Tar/Unzip, Mega and clone
 - Stop duplicates for all tasks except for qBittorrent and youtube-dl tasks 
@@ -59,7 +59,7 @@ uptobox.com (Uptobox account must be premium), solidfiles.com
 - Index Link support
 - Service Account support
 - Delete files from Drive
-- Shortener support
+- URL Shortener support
 - Custom Filename (Only for direct links, Telegram files and Youtube-dl. Not for Mega links and Torrents)
 - Extracting and downloading password protected index links. See these examples:
 <p><a href="https://telegra.ph/Magneto-Python-Aria---Custom-Filename-Examples-01-20"> <img src="https://img.shields.io/badge/See%20Telegraph-grey?style=for-the-badge&logo=telegraph" width="170""/></a></p>
@@ -109,8 +109,8 @@ pip3 install -r requirements-cli.txt
 
 **1. Using ElephantSQL**
 - Go to https://elephantsql.com and create account (skip this if you already have **ElephantSQL** account)
-- Hit `Create New Instance`
-- Follow the further instructions in the screen
+- Click on `Create New Instance`
+- Follow the further instructions on the screen
 - Hit `Select Region`
 - Hit `Review`
 - Hit `Create instance`
