@@ -188,8 +188,8 @@ class QbitTorrent:
                 self.listener.onDownloadError("No enough space for this torrent on device")
                 self.client.torrents_delete(torrent_hashes=self.ext_hash)
                 self.client.auth_log_out()
-            elif tor_info.state == "uploading" or tor_info.state.lower().endswith("up"):
                 self.updater.cancel()
+            elif tor_info.state == "uploading" or tor_info.state.lower().endswith("up"):                
                 self.client.torrents_pause(torrent_hashes=self.ext_hash)
                 if self.qbitsel:
                     for dirpath, subdir, files in os.walk(f"{self.dire}", topdown=False):
