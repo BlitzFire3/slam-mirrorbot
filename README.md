@@ -404,5 +404,8 @@ Thanks to:
 And many more people who aren't mentioned here, but can be found in [Contributors](https://github.com/SlamDevs/slam-mirrorbot/graphs/contributors).
 
 # Caution
-Heroku has started actions against people who exploit their APIs, make sure to use this in a sane way else your account might get banned. It is suggested that you use an alt e-mail to create account.
-You may use a credit/debit card in Heroku to get more dyno hours which can extend the working hours of your bot.
+- Heroku has started actions against people who exploit their APIs, make sure to use this in a sane way else your account might get banned. It is suggested that you use an alt e-mail to create account.
+- You may use a credit/debit card in Heroku to get more dyno hours which can extend the working hours of your bot.
+- Make sure that you don't share your credentials in a public repo which is on an account accessible by everyone you know. If any such information is shared, your accounts maybe under jeopardy.
+- If your bot dies, check the logs on Heroku dyno to see what's the issue.
+
