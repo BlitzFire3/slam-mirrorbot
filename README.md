@@ -402,3 +402,6 @@ Thanks to:
 - [`xyou365`](https://github.com/xyou365) for Service Accounts script
 
 And many more people who aren't mentioned here, but can be found in [Contributors](https://github.com/SlamDevs/slam-mirrorbot/graphs/contributors).
+
+# Caution
+Heroku has started actions against people who exploit their APIs, make sure to use this in a sane way else your account might get banned. It is suggested that you use an alt e-mail to create account.
