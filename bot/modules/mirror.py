@@ -208,7 +208,7 @@ class MirrorListener(listeners.MirrorListeners):
                 msg += f'<b>Total Files:</b> {count}'
                 sendMessage(msg, self.bot, self.update)
             else:
-                chat_id = str(self.message.chat.id)[4:]
+                chat_id = chat_id[4:]
                 msg = f"<b>Name:</b> <a href='https://t.me/c/{chat_id}/{self.uid}'>{link}</a>\n"
                 msg += f'<b>Total Files:</b> {count}\n'
                 msg += f'cc: {uname}\n\n'
