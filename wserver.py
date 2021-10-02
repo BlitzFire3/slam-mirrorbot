@@ -170,7 +170,7 @@ input[type="submit"] {
     width: 50%;
     display: block;
     height: 5.5vh;
-    background-color: #1b232e;
+    background-color: #0D1117;
     font-size: 16px;
     font-weight: 500;
 }
