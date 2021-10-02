@@ -381,7 +381,7 @@ header:hover, section:hover{
 
 img{ 
     width: 2.5rem;
-    height: 2.5rem;
+    height: 3.5rem;
     border: 2px solid black;
     border-radius: 50%;
 }
