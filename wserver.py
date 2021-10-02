@@ -473,7 +473,7 @@ section button{
 }
 
 section button:hover, section button:focus{
-    background-color: rgba(255, 255, 255, 0.068);
+    background-color: rgba(255, 255, 255, 0.088);
 }
 
 section span{
