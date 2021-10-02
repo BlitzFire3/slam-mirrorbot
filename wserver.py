@@ -97,7 +97,7 @@ img{
 .intro{
     text-align: center;
     margin-bottom: 2vh;
-    margin-top: 1vh;
+    margin-top: 2vh;
 }
 
 .social a{
