@@ -116,7 +116,7 @@ section{
     display: flex;
     flex-direction: column;
     border: 2px solid rgba(255, 255, 255, 0.11);
-    border-radius: 20px;
+    border-radius: 25px;
     background-color: #161B22 ;
 }
 
