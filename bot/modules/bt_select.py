@@ -43,21 +43,18 @@ def select(update, context):
         return
 
     try:
-        if dl.listener().isQbit:
-            id_ = dl.download().ext_hash
+        listener = dl.listener()
+        if listener.isQbit:
+            id_ = dl.hash()
             client = dl.client()
             client.torrents_pause(torrent_hashes=id_)
         else:
             id_ = dl.gid()
-<<<<<<< HEAD
-            aria2.client.force_pause(id_)
-=======
             try:
                 aria2.client.force_pause(id_)
             except Exception as e:
                 LOGGER.error(f"{e} Error in pause, this mostly happens after abuse aria2")
         listener.select = True
->>>>>>> 484ca38 (Minor fixes)
     except:
         sendMessage("This is not a bittorrent task!", context.bot, update.message)
         return

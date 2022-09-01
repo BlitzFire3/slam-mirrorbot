@@ -10,7 +10,7 @@ from urllib.parse import parse_qs, urlparse
 from random import randrange
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+from googleapiclient.errors import HttpError, Error as GCError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type, RetryError
 
@@ -124,7 +124,7 @@ class GoogleDriveHelper:
         return parse_qs(parsed.query)['id'][0]
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-           retry=retry_if_exception_type(Exception))
+           retry=retry_if_exception_type(GCError))
     def __set_permission(self, drive_id):
         permissions = {
             'role': 'reader',
@@ -136,13 +136,13 @@ class GoogleDriveHelper:
                                                    body=permissions).execute()
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-           retry=retry_if_exception_type(Exception))
+           retry=retry_if_exception_type(GCError))
     def __getFileMetadata(self, file_id):
         return self.__service.files().get(supportsAllDrives=True, fileId=file_id,
                                               fields="name,id,mimeType,size").execute()
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-           retry=retry_if_exception_type(Exception))
+           retry=retry_if_exception_type(GCError))
     def __getFilesByFolderId(self, folder_id):
         page_token = None
         files = []
@@ -237,67 +237,39 @@ class GoogleDriveHelper:
                 return
         self.__listener.onUploadComplete(link, size, self.__total_files, self.__total_folders, mime_type, self.name)
 
-<<<<<<< HEAD
-    def __upload_dir(self, input_directory, dest_id):
-        list_dirs = listdir(input_directory)
-        if len(list_dirs) == 0:
-            return dest_id
-=======
     def __upload_dir(self, input_directory, PARENT_ID):
         list_dirs = listdir(input_directory)
         if len(list_dirs) == 0:
             return PARENT_ID
->>>>>>> 484ca38 (Minor fixes)
         new_id = None
         for item in list_dirs:
             current_file_name = ospath.join(input_directory, item)
             if ospath.isdir(current_file_name):
-<<<<<<< HEAD
-                current_dir_id = self.__create_directory(item, dest_id)
-=======
                 current_dir_id = self.__create_directory(item, PARENT_ID)
->>>>>>> 484ca38 (Minor fixes)
                 new_id = self.__upload_dir(current_file_name, current_dir_id)
                 self.__total_folders += 1
             elif not item.lower().endswith(tuple(EXTENSION_FILTER)):
                 mime_type = get_mime_type(current_file_name)
                 file_name = current_file_name.split("/")[-1]
                 # current_file_name will have the full path
-<<<<<<< HEAD
-                self.__upload_file(current_file_name, file_name, mime_type, dest_id)
-                self.__total_files += 1
-                new_id = dest_id
-=======
                 self.__upload_file(current_file_name, file_name, mime_type, PARENT_ID)
                 self.__total_files += 1
                 new_id = PARENT_ID
->>>>>>> 484ca38 (Minor fixes)
             if self.__is_cancelled:
                 break
         return new_id
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-<<<<<<< HEAD
-           retry=retry_if_exception_type(Exception))
-    def __create_directory(self, directory_name, dest_id):
-=======
            retry=retry_if_exception_type(GCError))
     def __create_directory(self, directory_name, PARENT_ID):
->>>>>>> 484ca38 (Minor fixes)
         file_metadata = {
             "name": directory_name,
             "description": "Uploaded by Mirror-leech-telegram-bot",
             "mimeType": self.__G_DRIVE_DIR_MIME_TYPE
         }
-<<<<<<< HEAD
-        if dest_id is not None:
-            file_metadata["parents"] = [dest_id]
-        file = self.__service.files().create(body=file_metadata, supportsTeamDrives=True).execute()
-=======
         if PARENT_ID is not None:
             file_metadata["parents"] = [PARENT_ID]
         file = self.__service.files().create(supportsTeamDrives=True, body=file_metadata).execute()
->>>>>>> 484ca38 (Minor fixes)
         file_id = file.get("id")
         if not IS_TEAM_DRIVE:
             self.__set_permission(file_id)
@@ -305,26 +277,16 @@ class GoogleDriveHelper:
         return file_id
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-<<<<<<< HEAD
-           retry=(retry_if_exception_type(Exception)))
-    def __upload_file(self, file_path, file_name, mime_type, dest_id):
-=======
            retry=(retry_if_exception_type(GCError) | retry_if_exception_type(IOError)))
     def __upload_file(self, file_path, file_name, mime_type, PARENT_ID):
->>>>>>> 484ca38 (Minor fixes)
         # File body description
         file_metadata = {
             'name': file_name,
             'description': 'Uploaded by Mirror-leech-telegram-bot',
             'mimeType': mime_type,
         }
-<<<<<<< HEAD
-        if dest_id is not None:
-            file_metadata['parents'] = [dest_id]
-=======
         if PARENT_ID is not None:
             file_metadata['parents'] = [PARENT_ID]
->>>>>>> 484ca38 (Minor fixes)
 
         if ospath.getsize(file_path) == 0:
             media_body = MediaFileUpload(file_path,
@@ -364,11 +326,7 @@ class GoogleDriveHelper:
                     if USE_SERVICE_ACCOUNTS:
                         self.__switchServiceAccount()
                         LOGGER.info(f"Got: {reason}, Trying Again.")
-<<<<<<< HEAD
-                        return self.__upload_file(file_path, file_name, mime_type, dest_id)
-=======
                         return self.__upload_file(file_path, file_name, mime_type, PARENT_ID)
->>>>>>> 484ca38 (Minor fixes)
                     else:
                         LOGGER.error(f"Got: {reason}")
                         raise err
@@ -457,42 +415,26 @@ class GoogleDriveHelper:
             return msg, ""
         return msg, buttons.build_menu(2)
 
-<<<<<<< HEAD
-    def __cloneFolder(self, name, local_path, folder_id, dest_id):
-        LOGGER.info(f"Syncing: {local_path}")
-        files = self.__getFilesByFolderId(folder_id)
-        if len(files) == 0:
-            return dest_id
-=======
     def __cloneFolder(self, name, local_path, folder_id, PARENT_ID):
         LOGGER.info(f"Syncing: {local_path}")
         files = self.__getFilesByFolderId(folder_id)
         if len(files) == 0:
             return PARENT_ID
->>>>>>> 484ca38 (Minor fixes)
         for file in files:
             if file.get('mimeType') == self.__G_DRIVE_DIR_MIME_TYPE:
                 self.__total_folders += 1
                 file_path = ospath.join(local_path, file.get('name'))
-<<<<<<< HEAD
-                current_dir_id = self.__create_directory(file.get('name'), dest_id)
-=======
                 current_dir_id = self.__create_directory(file.get('name'), PARENT_ID)
->>>>>>> 484ca38 (Minor fixes)
                 self.__cloneFolder(file.get('name'), file_path, file.get('id'), current_dir_id)
             elif not file.get('name').lower().endswith(tuple(EXTENSION_FILTER)):
                 self.__total_files += 1
                 self.transferred_size += int(file.get('size', 0))
-<<<<<<< HEAD
-                self.__copyFile(file.get('id'), dest_id)
-=======
                 self.__copyFile(file.get('id'), PARENT_ID)
->>>>>>> 484ca38 (Minor fixes)
             if self.__is_cancelled:
                 break
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-           retry=retry_if_exception_type(Exception))
+           retry=retry_if_exception_type(GCError))
     def __copyFile(self, file_id, dest_id):
         body = {'parents': [dest_id]}
         try:
@@ -574,12 +516,6 @@ class GoogleDriveHelper:
                         .execute()
                     )
                 else:
-<<<<<<< HEAD
-                    return self.__service.files().list(supportsTeamDrives=True, includeTeamDriveItems=True,
-                                                       driveId=dir_id, q=query, spaces='drive', pageSize=200,
-                                                       fields='files(id, name, mimeType, size, teamDriveId, parents)',
-                                                       corpora='drive', orderBy='folder, name asc').execute()
-=======
                     return (
                         self.__service.files()
                         .list(supportsTeamDrives=True,
@@ -594,7 +530,6 @@ class GoogleDriveHelper:
                         )
                         .execute()
                     )
->>>>>>> 484ca38 (Minor fixes)
             else:
                 if stopDup:
                     query = f"'{PARENT_ID}' in parents and name = '{fileName}' and "
@@ -862,7 +797,7 @@ class GoogleDriveHelper:
                 break
 
     @retry(wait=wait_exponential(multiplier=2, min=3, max=6), stop=stop_after_attempt(3),
-           retry=(retry_if_exception_type(Exception)))
+           retry=(retry_if_exception_type(GCError) | retry_if_exception_type(IOError)))
     def __download_file(self, file_id, path, filename, mime_type):
         request = self.__service.files().get_media(fileId=file_id)
         filename = filename.replace('/', '')
