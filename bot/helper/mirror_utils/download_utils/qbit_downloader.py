@@ -409,7 +409,6 @@ def __qb_listener():
                     UPLOADED.add(tor_info.hash)
                     __onDownloadComplete(client, tor_info)
                 elif tor_info.state in ['pausedUP', 'pausedDL'] and tor_info.hash in SEEDING:
-                    SEEDING.remove(tor_info.hash)
                     __onSeedFinish(client, tor_info)
         except Exception as e:
             LOGGER.error(str(e))
