@@ -1,7 +1,7 @@
 from telegram.ext import CommandHandler, CallbackQueryHandler
 from os import remove, path as ospath
 
-from bot import aria2, BASE_URL, download_dict, dispatcher, download_dict_lock, SUDO_USERS, OWNER_ID
+from bot import aria2, BASE_URL, download_dict, dispatcher, download_dict_lock, SUDO_USERS, OWNER_ID, LOGGER
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage, sendMarkup, sendStatusMessage
@@ -49,7 +49,15 @@ def select(update, context):
             client.torrents_pause(torrent_hashes=id_)
         else:
             id_ = dl.gid()
+<<<<<<< HEAD
             aria2.client.force_pause(id_)
+=======
+            try:
+                aria2.client.force_pause(id_)
+            except Exception as e:
+                LOGGER.error(f"{e} Error in pause, this mostly happens after abuse aria2")
+        listener.select = True
+>>>>>>> 484ca38 (Minor fixes)
     except:
         sendMessage("This is not a bittorrent task!", context.bot, update.message)
         return
@@ -103,7 +111,10 @@ def get_confirm(update, context):
                         remove(f['path'])
                     except:
                         pass
-            aria2.client.unpause(id_)
+            try:
+                aria2.client.unpause(id_)
+            except Exception as e:
+                LOGGER.error(f"{e} Error in resume, this mostly happens after abuse aria2. Try to use select cmd again!")
         sendStatusMessage(listener.message, listener.bot)
         query.message.delete()
 
