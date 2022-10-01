@@ -40,6 +40,7 @@ def mirror_status(update, context):
 
 def status_pages(update, context):
     query = update.callback_query
+    query.answer()
     data = query.data
     data = data.split()
     query.answer()
