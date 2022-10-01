@@ -126,12 +126,32 @@ if len(BOT_TOKEN) == 0:
     log_error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
+<<<<<<< HEAD
 OWNER_ID = environ.get('OWNER_ID', '')
 if len(OWNER_ID) == 0:
     log_error("OWNER_ID variable is missing! Exiting now")
     exit(1)
 else:
     OWNER_ID = int(OWNER_ID)
+=======
+aid = environ.get('AUTHORIZED_CHATS', '')
+if len(aid) != 0:
+    aid = aid.split()
+    AUTHORIZED_CHATS = {int(_id.strip()) for _id in aid}
+else:
+    AUTHORIZED_CHATS = set()
+aid = environ.get('SUDO_USERS', '')
+if len(aid) != 0:
+    aid = aid.split()
+    SUDO_USERS = {int(_id.strip()) for _id in aid}
+else:
+    SUDO_USERS = set()
+fx = environ.get('EXTENSION_FILTER', '')
+if len(fx) > 0:
+    fx = fx.split()
+    for x in fx:
+        EXTENSION_FILTER.add(x.strip().lower())
+>>>>>>> bab8c54 (Change)
 
 TELEGRAM_API = environ.get('TELEGRAM_API', '')
 if len(TELEGRAM_API) == 0:
