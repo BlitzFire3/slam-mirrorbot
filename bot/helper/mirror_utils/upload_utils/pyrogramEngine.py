@@ -46,15 +46,14 @@ class TgUploader:
                     self.__total_files += 1
                     try:
                         if ospath.getsize(up_path) == 0:
-                            LOGGER.error(f"{up_path} size is zero, telegram don't upload zero size files")
+                            LOGGER.error(f"{up_path} size error, upload large file")
                             self.__corrupted += 1
                             continue
                     except Exception as e:
                         if self.__is_cancelled:
                             return
-                        else:
-                            LOGGER.error(e)
-                            continue
+                       LOGGER.error(e)
+                        continue
                     self.__upload_file(up_path, file_, dirpath)
                     if self.__is_cancelled:
                         return
@@ -100,7 +99,7 @@ class TgUploader:
                         width = 480
                         height = 320
                     if not file_.upper().endswith(("MKV", "MP4")):
-                        file_ = f"{ospath.splitext(file_)[0]}.mp4"
+                        file_ = f"{ospath.splitext(file_)[0]}.mkv"
                         new_path = ospath.join(dirpath, file_)
                         osrename(up_path, new_path)
                         up_path = new_path
@@ -179,10 +178,7 @@ class TgUploader:
         user_id = self.__listener.message.from_user.id
         user_dict = user_data.get(user_id, False)
         if user_dict:
-            if user_dict.get('as_doc'):
-                self.__as_doc = True
-            else:
-                self.__as_doc = False
+            self.__as_doc = user_dict.get('as_doc', False)
         if not ospath.lexists(self.__thumb):
             self.__thumb = None
 
